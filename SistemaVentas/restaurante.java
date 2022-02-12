@@ -15,11 +15,11 @@ public class restaurante {
 
         // Initializing the Inventory Stock (All start with 100 units available)
         LinkedList<Integer> platos = new LinkedList<>();
-        platos.add(100); // Arroz
-        platos.add(100); // Pollo
-        platos.add(100); // Leche
-        platos.add(100); // Panes
-        platos.add(100); // Huevo
+        platos.add(100); // Arroz con Pato
+        platos.add(100); // Aji de Gallina
+        platos.add(100); // Pachamanca
+        platos.add(100); // Cuy chactado
+        platos.add(100); // Lomo Saltado
 
         boolean keepProgram = true;
         while (keepProgram) {
