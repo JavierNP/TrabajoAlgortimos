@@ -1,4 +1,4 @@
-package main;
+package SistemaVentas;
 
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -8,18 +8,18 @@ import javax.sound.sampled.Line;
 public class restaurante {
  
     static char[] idProductos = {'A','B','C','D','E'};
-    static String[] productos = {"Arroz","Pollo","Leche","Panes","Huevo"};
-    static double[] precios = {3.1, 10.2, 4.0, 5.6, 6.2};
+    static String[] productos = {"Arroz con Pato","Aji de Gallina","Pachamanca    ","Cuy chactado  ","Lomo Saltado  "};
+    static double[] precios = {31, 45, 32, 25, 25};
 
     public static void main(String[] args) {
 
-        // Initializing the Inventory Stock (All start with 10000 units)
-        LinkedList<Integer> inventario = new LinkedList<>();
-        inventario.add(10000); // Arroz
-        inventario.add(10000); // Pollo
-        inventario.add(10000); // Leche
-        inventario.add(10000); // Panes
-        inventario.add(10000); // Huevo
+        // Initializing the Inventory Stock (All start with 100 units available)
+        LinkedList<Integer> platos = new LinkedList<>();
+        platos.add(100); // Arroz
+        platos.add(100); // Pollo
+        platos.add(100); // Leche
+        platos.add(100); // Panes
+        platos.add(100); // Huevo
 
         boolean keepProgram = true;
         while (keepProgram) {
@@ -27,7 +27,28 @@ public class restaurante {
             char choicePrincipal = showScreenPrincipal();
             System.out.println(choicePrincipal);
             if (choicePrincipal=='A') {
+
+                // Imprime platos disponible
+                clearScreen();
+                String mensajeInv = "\n"
+                + "===============================================================\n"
+                + "===================== Plataforma de Carta =====================\n"
+                + "===============================================================\n"
+                + "\n"
+                + "Tenemos a la carta los siguientes platos:\n"
+                + "\n"                
+                + "Platos\t\t\tUnd. Disponibles\n"
+                ;
+                System.out.print(mensajeInv);
+                    
+                for (int i=0; i < productos.length;i++){
+                    System.out.println(" - "+productos[i]+"\t "+platos.get(i)+" und.");
+                }
     
+
+            }
+
+            else if (choicePrincipal=='B') {
                 LinkedList<String> items = new LinkedList<>();
                 LinkedList<Integer> cantidades = new LinkedList<>();
     
@@ -41,11 +62,11 @@ public class restaurante {
                     int cant = showScreenCantidad();
                     System.out.println(cant);
             
-                    System.out.println("\nEligio "+cant+" unidades de "+product+"\n");
+                    System.out.println("\nEligio "+cant+" platos de "+product+"\n");
     
                     items.add(product);
                     cantidades.add(cant);
-                    inventario.set(idxProduct, inventario.get(idxProduct) - cant);
+                    platos.set(idxProduct, platos.get(idxProduct) - cant);
     
                     System.out.print("Desea realizar otro pedido [Y/N]?:\t");
                     Scanner sc = new Scanner(System.in);
@@ -54,24 +75,7 @@ public class restaurante {
     
                 }
     
-    
-                double precioFinal = getPrecioFinal(items, cantidades);        
-            }
-
-            else if (choicePrincipal=='B') {
-                // Imprime inventario disponible
-                clearScreen();
-                String mensajeInv = "\n"
-                + "===========================================================\n"
-                + "================= Plataforma de Inventario ================\n"
-                + "===========================================================\n"
-                + "\n"
-                + "Su stock de productos es el siguiente:\n\n";
-                System.out.print(mensajeInv);
-                    
-                for (int i=0; i < productos.length;i++){
-                    System.out.println(" - "+productos[i]+"\t"+inventario.get(i)+" und. disponibles");
-                }
+                printBoleta(items, cantidades);        
             }
             else if (choicePrincipal=='C'){
                 keepProgram=false;
@@ -113,14 +117,14 @@ public class restaurante {
     private static char showScreenPrincipal(){
 
         String mensaje = "\n"
-        + "===========================================================\n"
-        + "=========== Bienvenido al modulo de inventario! ===========\n"
-        + "===========================================================\n"
+        + "===============================================================\n"
+        + "============= Bienvenido al Sistema de Restaurant =============\n"
+        + "===============================================================\n"
         + "\n"
         + "\tOpciones disponibles:\n"
-        + "\tA) Registrar un pedido\t[A]\n"
-        + "\tB) Consultar inventario\t[B]\n"
-        + "\tC) Cerrar el modulo \t[C]\n"
+        + "\tA) Consultar carta disponible\t[A]\n"
+        + "\tB) Registrar un pedido\t\t[B]\n"
+        + "\tC) Cerrar el modulo \t\t[C]\n"
         + "\nQue accion desea realizar?:\t";
         System.out.print(mensaje);
         Scanner sc = new Scanner(System.in);
@@ -135,17 +139,19 @@ public class restaurante {
 
     private static char showScreenPedido(){
         clearScreen();
+//        static String[] productos = {"Arroz con Pato","Pachamanca","Trio Marino","Chicharron de chancho","Arroz chaufa salvaje"};
+
         String mensaje = "\n"
-        + "===========================================================\n"
-        + "================== Plataforma de Pedidos ==================\n"
-        + "===========================================================\n"
+        + "===============================================================\n"
+        + "==================== Plataforma de Pedidos ====================\n"
+        + "===============================================================\n"
         + "\n"
         + "\tOpciones disponibles:\n"
-        + "\tA) Arroz  (1 kg)\t[A]\n"
-        + "\tB) Pollo  (1 kg)\t[B]\n"
-        + "\tC) Leche  (1 Lt)\t[C]\n"
-        + "\tD) Pan (1 bolsa)\t[D]\n"
-        + "\tE) Huevos (1 kg)\t[E]\n"
+        + "\tA) Arroz con Pato (1 plato)\t[A]\n"
+        + "\tB) Aji de Gallina (1 plato)\t[B]\n"
+        + "\tC) Pachamanca     (1 plato)\t[C]\n"
+        + "\tD) Cuy chactado   (1 plato)\t[D]\n"
+        + "\tE) Lomo Saltado   (1 plato)\t[E]\n"
         + "\nPor favor, escoja un producto:\t";
         System.out.print(mensaje);
         Scanner sc = new Scanner(System.in);
@@ -158,12 +164,12 @@ public class restaurante {
     private static int showScreenCantidad(){
         clearScreen();
         String mensaje = "\n"
-        + "===========================================================\n"
-        + "================== Plataforma de Pedidos ==================\n"
-        + "===========================================================\n"
+        + "===============================================================\n"
+        + "==================== Plataforma de Pedidos ====================\n"
+        + "===============================================================\n"
         + "\n"
         + "\n"
-        + "\nCuantas unidades deseas comprar?:\t";
+        + "\nCuantos platos deseas comprar?:\t";
         System.out.print(mensaje);
         Scanner sc = new Scanner(System.in);
         int cant = sc.nextInt();
@@ -174,7 +180,7 @@ public class restaurante {
     }
 
 
-    private static double getPrecioFinal(LinkedList<String> items,
+    private static void printBoleta(LinkedList<String> items,
                                         LinkedList<Integer> cantidades){
                                             
         double precioFinal = 0;
@@ -186,12 +192,12 @@ public class restaurante {
 
         clearScreen();
         String mensaje = "\n"
-        + "===========================================================\n"
-        + "================== Plataforma de Pedidos ==================\n"
-        + "===========================================================\n"
+        + "===============================================================\n"
+        + "==================== Plataforma de Pedidos ====================\n"
+        + "===============================================================\n"
         + "\n"
-        + "\n=================== Resumen del pedido ====================\n"
-        + "\nProducto\tCantidad\tPU\t\tSubtotal\n";
+        + "\n===================== Resumen del pedido ======================\n"
+        + "\nProducto\t\tCantidad\tPU\t\tSubtotal\n";
         System.out.print(mensaje);        
         for (int i=0; i < items.size(); i++){
 
@@ -200,17 +206,17 @@ public class restaurante {
             precioUnit = getPrecioParcial(item);
             precioParcial = Math.round(cant * precioUnit * 100) /100.0; 
             precioFinal += precioParcial;
-            System.out.println("- "+item+"\t\t"+cant+"\t\t"+precioUnit+"\t\t"+precioParcial);
+            System.out.println("- "+item+"\t"+cant+"\t\t"+precioUnit+"\t\t"+precioParcial);
         }
         precioFinal = Math.round(precioFinal * 100) /100; 
         double precioIGV = Math.round(precioFinal*(IGV)*100)/100.0;
         double precioFinalIGV = Math.round((precioFinal+precioIGV) * 100)/100.0;
-        System.out.println("\n\t\t\t\tTOTAL:\t\t"+precioFinal);
-        System.out.println("\t\t\t\tIGV (18%)\t"+precioIGV);
-        System.out.println("\t\t\t\tTOTAL (+IGV):\t"+(precioFinalIGV));
+        System.out.println("\n\t\t\t\t\tTOTAL:\t\t"+precioFinal);
+        System.out.println("\t\t\t\t\tIGV (18%):\t"+precioIGV);
+        System.out.println("\t\t\t\t\tTOTAL (+IGV):\t"+(precioFinalIGV));
         
 
-        return precioFinal;                                           
+//        return precioFinal;                                           
     }
 
     private static double getPrecioParcial(String product){
